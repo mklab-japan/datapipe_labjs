@@ -265,14 +265,40 @@ this.options.templateParameters.push({participantID: participantID})
                 "messageHandlers": {
                   "before:prepare": function anonymous(
 ) {
-//csv
-//const = study.options.datastore.exportCsv(separator=', ')
+// //csv
+// //const = study.options.datastore.exportCsv(separator=', ')
 
-//check Tardy
-//ファイル名をユーザーIDにする
-const filename = this.parameters.participantID
+// //check Tardy
+// //ファイル名をユーザーIDにする
+// const filename = this.parameters.participantID
 
-let dataJSON = study.options.datastore.exportJson();
+// let dataJSON = study.options.datastore.exportJson();
+
+// fetch("https://pipe.jspsych.org/api/data/", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//     Accept: "*/*",
+//   },
+//   body: JSON.stringify({
+//     experimentID: "hnX6tg1hWIjS",
+//     filename: `${filename}.json`,
+//     data: dataJSON,
+//   }),
+// });
+
+function randomID(){
+  const length = 10;
+  let result = "";
+  const chars = "0123456789abcdefghjklmnopqrstuvwxyz";
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+    
+let dataJSON = study.internals.controller.datastore.exportJson();
+
 
 fetch("https://pipe.jspsych.org/api/data/", {
   method: "POST",
@@ -282,10 +308,10 @@ fetch("https://pipe.jspsych.org/api/data/", {
   },
   body: JSON.stringify({
     experimentID: "hnX6tg1hWIjS",
-    filename: `${filename}.json`,
+    filename: `${randomID()}.json`,
     data: dataJSON,
   }),
-});
+})
 }
                 },
                 "title": "post_datapie_thanks",
