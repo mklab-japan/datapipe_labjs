@@ -272,7 +272,7 @@ this.options.templateParameters.push({participantID: participantID})
 //ファイル名をユーザーIDにする
 const filename = this.parameters.participantID
 
-let dataJSON = study.internals.controller.datastore.exportJson();
+let dataJSON = study.options.datastore.exportJson();
 
 fetch("https://pipe.jspsych.org/api/data/", {
   method: "POST",
