@@ -1,8 +1,8 @@
 // Define study
 const study = lab.util.fromObject({
+  "messageHandlers": {},
   "title": "root",
   "type": "lab.flow.Sequence",
-  "parameters": {},
   "plugins": [
     {
       "type": "lab.plugins.Metadata",
@@ -10,283 +10,209 @@ const study = lab.util.fromObject({
     },
     {
       "type": "lab.plugins.Download",
-      "filePrefix": "study",
+      "filePrefix": "stroop-task",
       "path": undefined
     }
   ],
   "metadata": {
-    "title": "",
-    "description": "",
-    "repository": "",
-    "contributors": ""
+    "title": "Stroop task",
+    "description": "An implementation of the classic paradigm introduced by Stroop (1935).",
+    "repository": "https:\u002F\u002Fgithub.com\u002FFelixHenninger\u002Flab.js\u002Ftree\u002Fmaster\u002Ftasks",
+    "contributors": "Felix Henninger \u003Cmailbox@felixhenninger.com\u003E (http:\u002F\u002Ffelixhenninger.com)"
   },
+  "parameters": {},
   "files": {},
   "responses": {},
   "content": [
     {
-      "type": "lab.flow.Loop",
-      "templateParameters": [],
-      "sample": {
-        "mode": "draw-shuffle"
+      "messageHandlers": {},
+      "type": "lab.html.Screen",
+      "responses": {
+        "keypress(Space)": "continue"
       },
+      "title": "Instruction",
+      "content": "\u003Cheader class=\"content-vertical-center content-horizontal-center\"\u003E\n  \u003Ch1\u003EDataPipe demo - lab.js\u003C\u002Fh1\u003E\n\u003C\u002Fheader\u003E\n\u003Cmain\u003E\n  \u003Cp\u003E\n    This is a demo of using DataPipe to store data from lab.js\n  \u003C\u002Fp\u003E\n  \u003Cp\u003E\n    The task is a short Stroop task to generate some data that can\n    be saved. There are 9 trials. After completing the task the\n    data will be saved on the OSF.\n  \u003C\u002Fp\u003E\n  \u003Cp\u003E\n    To indicate the color of the word, \n    please use the keys \u003Cstrong\u003Er\u003C\u002Fstrong\u003E, \n    \u003Cstrong\u003Eg\u003C\u002Fstrong\u003E, and \u003Cstrong\u003Eb\u003C\u002Fstrong\u003E for \n    \u003Cspan style=\"color: red;\"\u003Ered\u003C\u002Fspan\u003E, \n    \u003Cspan style=\"color: green;\"\u003Egreen\u003C\u002Fspan\u003E, and\n    \u003Cspan style=\"color: blue;\"\u003Eblue\u003C\u002Fspan\u003E\n    respectively.\u003Cbr\u003E\n    Please answer quickly, and as \n    accurately as you can.\n  \u003C\u002Fp\u003E\n\u003C\u002Fmain\u003E\n\u003Cfooter class=\"content-vertical-center content-horizontal-center\"\u003E\n  Please press the space bar when you're ready.\n\u003C\u002Ffooter\u003E\n",
+      "parameters": {},
+      "files": {}
+    },
+    {
+      "type": "lab.canvas.Frame",
+      "context": "\u003Cmain class=\"content-vertical-center content-horizontal-center\"\u003E\n  \u003Ccanvas \u002F\u003E\n\u003C\u002Fmain\u003E\n\n\u003Cfooter class=\"content-vertical-center content-horizontal-center\"\u003E\n  \u003Cp\u003E\n    What's the \u003Cem\u003Ecolor\u003C\u002Fem\u003E of \n    the word shown above? \u003Cbr\u003E\n    Please press \u003Ckbd\u003Er\u003C\u002Fkbd\u003E for red,\n    \u003Ckbd\u003Eg\u003C\u002Fkbd\u003E for green, and \n    \u003Ckbd\u003Eb\u003C\u002Fkbd\u003E for blue.\n  \u003C\u002Fp\u003E\n\u003C\u002Ffooter\u003E\n",
+      "contextSelector": "canvas",
       "files": {},
+      "parameters": {},
       "responses": {
         "": ""
       },
-      "parameters": {},
-      "messageHandlers": {
-        "before:prepare": async function anonymous(
-) {
-let participantID;
-//参加者番号がすでにあるかどうかをチェック
-if(this.state.participantID)
-{
-  participantID = this.state.participantID;
-}
-//参加者番号が生成されていない場合に生成
-else
-{
-  //JATOS以外の場合は参加者番号をランダム生成する
-  if (typeof jatos == 'undefined') {
-    participantID = this.random.range(10000, 100000);
-  }
-  //JATOS利用時は参加者番号にJATOSのWorker IDを置き換える
-  else{
-    participantID = await new Promise((resolve) => {
-      jatos.onLoad(() => resolve(jatos.workerId))
-    })
-  }
-}
-
-//作成した(または読み込んだ)参加者番号をlab.jsに読み込む
-this.options.templateParameters.push({participantID: participantID})
-}
-      },
-      "title": "Global loop",
-      "plugins": [
-        {
-          "type": "fullscreen",
-          "message": "この実験はフルスクリーンで実施します。準備ができたら，下のボタンを押してください。",
-          "hint": "\u003Cbutton\u003Eフルスクリーンを許可する\u003C\u002Fbutton\u003E",
-          "path": "lab.plugins.Fullscreen"
-        }
-      ],
-      "shuffleGroups": [],
-      "template": {
-        "type": "lab.flow.Sequence",
-        "files": {},
+      "messageHandlers": {},
+      "title": "Task frame",
+      "content": {
+        "messageHandlers": {},
+        "type": "lab.flow.Loop",
         "responses": {
           "": ""
         },
+        "templateParameters": [
+          {
+            "color": "red",
+            "word": "red",
+            "phase": "task"
+          },
+          {
+            "color": "red",
+            "word": "green",
+            "phase": "task"
+          },
+          {
+            "color": "red",
+            "word": "blue",
+            "phase": "task"
+          },
+          {
+            "color": "green",
+            "word": "green",
+            "phase": "task"
+          },
+          {
+            "color": "green",
+            "word": "blue",
+            "phase": "task"
+          },
+          {
+            "color": "blue",
+            "word": "red",
+            "phase": "task"
+          },
+          {
+            "color": "blue",
+            "word": "green",
+            "phase": "task"
+          },
+          {
+            "color": "blue",
+            "word": "blue",
+            "phase": "task"
+          },
+          {
+            "color": "green",
+            "word": "red",
+            "phase": "task"
+          }
+        ],
+        "title": "Stroop task",
         "parameters": {},
-        "messageHandlers": {},
-        "title": "Global Sequence",
-        "content": [
-          {
-            "type": "lab.html.Page",
-            "items": [
-              {
-                "type": "text",
-                "title": "lab.jsのデータをDataPipe経由で保存するデモです。",
-                "content": ""
+        "files": {},
+        "sample": {
+          "mode": "draw-shuffle"
+        },
+        "shuffleGroups": [],
+        "template": {
+          "messageHandlers": {},
+          "type": "lab.flow.Sequence",
+          "responses": {
+            "": ""
+          },
+          "title": "Trial",
+          "parameters": {},
+          "files": {},
+          "content": [
+            {
+              "type": "lab.canvas.Screen",
+              "content": [
+                {
+                  "type": "i-text",
+                  "left": 0,
+                  "top": 0,
+                  "angle": 0,
+                  "width": 18.69,
+                  "height": 36.16,
+                  "stroke": null,
+                  "strokeWidth": 1,
+                  "fill": "black",
+                  "text": "+",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "fontSize": "72",
+                  "fontFamily": "sans-serif",
+                  "lineHeight": 1.16,
+                  "textAlign": "center"
+                }
+              ],
+              "files": {},
+              "parameters": {},
+              "responses": {
+                "": ""
               },
-              {
-                "required": true,
-                "type": "text",
-                "content": "",
-                "title": "準備ができた方は「次へ」を押して，開始してください。"
+              "messageHandlers": {},
+              "viewport": [
+                800,
+                600
+              ],
+              "title": "Fixation cross",
+              "timeout": "500"
+            },
+            {
+              "type": "lab.canvas.Screen",
+              "content": [
+                {
+                  "type": "i-text",
+                  "left": 0,
+                  "top": 0,
+                  "angle": 0,
+                  "width": 331.08,
+                  "height": 36.16,
+                  "stroke": null,
+                  "strokeWidth": 1,
+                  "fill": "${ this.parameters.color }",
+                  "text": "${ this.parameters.word }",
+                  "fontStyle": "normal",
+                  "fontWeight": "bold",
+                  "fontSize": "72",
+                  "fontFamily": "sans-serif",
+                  "lineHeight": 1.16,
+                  "textAlign": "center"
+                }
+              ],
+              "files": {},
+              "parameters": {},
+              "responses": {
+                "keydown(r)": "red",
+                "keydown(g)": "green",
+                "keydown(b)": "blue",
+                "keydown(o)": "orange"
               },
-              {
-                "required": true,
-                "type": "html",
-                "content": "\u003Cdiv class = 'content-horizontal-center'\u003E\u003Cbutton id = \"nextBtn\"\u003E次へ\u003C\u002Fbutton\u003E\u003C\u002Fdiv\u003E",
-                "name": ""
-              }
-            ],
-            "scrollTop": true,
-            "submitButtonText": "次へ",
-            "submitButtonPosition": "hidden",
-            "files": {
-              "inst.001.png": "embedded\u002F3c3debfd0f862e2cd8b74bd5429a56760959056bfb6ba3c435ae0e1cc2442603.png"
+              "messageHandlers": {},
+              "viewport": [
+                800,
+                600
+              ],
+              "title": "Stroop screen",
+              "correctResponse": "${ this.parameters.color }"
             },
-            "responses": {
-              "": ""
-            },
-            "parameters": {},
-            "messageHandlers": {},
-            "title": "Instruction"
-          },
-          {
-            "type": "lab.flow.Sequence",
-            "files": {},
-            "responses": {
-              "": ""
-            },
-            "parameters": {},
-            "messageHandlers": {},
-            "title": "Briefing",
-            "content": [
-              {
-                "type": "lab.html.Page",
-                "items": [
-                  {
-                    "required": true,
-                    "type": "input",
-                    "label": "年齢",
-                    "attributes": {
-                      "type": "number",
-                      "min": "18",
-                      "max": "99"
-                    },
-                    "help": "年齢を半角数字で入力してください。",
-                    "name": "age"
-                  },
-                  {
-                    "required": false,
-                    "type": "input",
-                    "label": "性別",
-                    "help": "性別を入力してください（回答したくない方は空欄でかまいません）。",
-                    "name": "sex"
-                  },
-                  {
-                    "required": true,
-                    "type": "html",
-                    "content": "\u003Cdiv class = 'content-horizontal-center'\u003E\u003Cbutton id = \"nextBtn\"\u003E次へ\u003C\u002Fbutton\u003E\u003C\u002Fdiv\u003E",
-                    "name": ""
-                  }
-                ],
-                "scrollTop": true,
-                "submitButtonText": "次へ",
-                "submitButtonPosition": "hidden",
-                "files": {},
-                "responses": {
-                  "": ""
-                },
-                "parameters": {},
-                "messageHandlers": {},
-                "title": "demographic"
-              }
-            ]
-          },
-          {
-            "type": "lab.flow.Sequence",
-            "files": {},
-            "responses": {
-              "": ""
-            },
-            "parameters": {},
-            "messageHandlers": {},
-            "title": "Main",
-            "content": [
-              {
-                "type": "lab.html.Page",
-                "items": [
-                  {
-                    "required": true,
-                    "type": "radio",
-                    "options": [
-                      {
-                        "label": "まったくあてはまらない",
-                        "coding": "1"
-                      },
-                      {
-                        "label": "あてはまらない",
-                        "coding": "2"
-                      },
-                      {
-                        "label": "どちらともいえない",
-                        "coding": "3"
-                      },
-                      {
-                        "label": "あてはまる",
-                        "coding": "4"
-                      },
-                      {
-                        "label": "非常によくあてはまる",
-                        "coding": "5"
-                      }
-                    ],
-                    "label": "わたしは猫が好きだ",
-                    "name": "catLiking"
-                  },
-                  {
-                    "required": true,
-                    "type": "html",
-                    "content": "\u003Cdiv class = 'content-horizontal-center'\u003E\u003Cbutton id = \"nextBtn\"\u003E次へ\u003C\u002Fbutton\u003E\u003C\u002Fdiv\u003E",
-                    "name": ""
-                  }
-                ],
-                "scrollTop": true,
-                "submitButtonText": "次へ",
-                "submitButtonPosition": "hidden",
-                "files": {},
-                "responses": {
-                  "": ""
-                },
-                "parameters": {},
-                "messageHandlers": {},
-                "title": "Questionnaire"
-              }
-            ]
-          },
-          {
-            "type": "lab.flow.Sequence",
-            "files": {},
-            "responses": {
-              "": ""
-            },
-            "parameters": {},
-            "messageHandlers": {},
-            "title": "Deberifing",
-            "content": [
-              {
-                "type": "lab.html.Page",
-                "items": [
-                  {
-                    "type": "text",
-                    "title": "\u003Cspan style = \"color: tomato\"\u003E実験・調査終了です。ありがとうございました！\u003C\u002Fspan\u003E",
-                    "content": ""
-                  },
-                  {
-                    "required": true,
-                    "type": "html",
-                    "content": "\u003Cdiv class=\"content-horizontal-center\"\u003E\u003Cbutton\u003Eコピー\u002Fメモしたので終了する\u003C\u002Fbutton\u003E\u003C\u002Fdiv\u003E",
-                    "name": ""
-                  }
-                ],
-                "scrollTop": true,
-                "submitButtonText": "Continue →",
-                "submitButtonPosition": "hidden",
-                "files": {},
-                "responses": {
-                  "": ""
-                },
-                "parameters": {},
-                "messageHandlers": {
-                  "before:prepare": function anonymous(
+            {
+              "type": "lab.canvas.Screen",
+              "content": [],
+              "files": {},
+              "parameters": {},
+              "responses": {
+                "": ""
+              },
+              "messageHandlers": {},
+              "viewport": [
+                800,
+                600
+              ],
+              "title": "Inter-trial interval",
+              "timeout": "500"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "messageHandlers": {
+        "before:prepare": function anonymous(
 ) {
-// //csv
-// //const = study.options.datastore.exportCsv(separator=', ')
-
-// //check Tardy
-// //ファイル名をユーザーIDにする
-// const filename = this.parameters.participantID
-
-// let dataJSON = study.options.datastore.exportJson();
-
-// fetch("https://pipe.jspsych.org/api/data/", {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//     Accept: "*/*",
-//   },
-//   body: JSON.stringify({
-//     experimentID: "hnX6tg1hWIjS",
-//     filename: `${filename}.json`,
-//     data: dataJSON,
-//   }),
-// });
-
 function randomID(){
   const length = 10;
   let result = "";
@@ -311,16 +237,19 @@ fetch("https://pipe.jspsych.org/api/data/", {
     filename: `${randomID()}.json`,
     data: dataJSON,
   }),
-})
+});
 }
-                },
-                "title": "post_datapie_thanks",
-                "tardy": true
-              }
-            ]
-          }
-        ]
-      }
+      },
+      "type": "lab.html.Screen",
+      "responses": {
+        "": ""
+      },
+      "title": "Save Data and Thanks",
+      "content": "\u003Cheader class=\"content-vertical-center content-horizontal-center\"\u003E\n  \u003Ch1\u003EThank you!\u003C\u002Fh1\u003E\n\u003C\u002Fheader\u003E\n\u003Cmain\u003E\n  \u003Cp\u003E\n    The data file should be available at \u003Ca href=\"https:\u002F\u002Fosf.io\u002Fyrjzg\u002F\" target=\"_blank\"\u003Ehttps:\u002F\u002Fosf.io\u002Fyrjzg\u002F\u003C\u002Fa\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fmain\u003E\n",
+      "timeout": "10",
+      "parameters": {},
+      "files": {},
+      "tardy": true
     }
   ]
 })
