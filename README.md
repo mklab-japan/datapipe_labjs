@@ -1,2 +1,2 @@
-# datapite_labjs
-https://mklab-japan.github.io/datapite_labjs/
+# datapipe_labjs
+https://mklab-japan.github.io/datapipe_labjs/
